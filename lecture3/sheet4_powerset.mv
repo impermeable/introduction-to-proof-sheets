@@ -1,0 +1,136 @@
+# 2.1 Sets<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+Require Import Coq.Reals.Reals.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Set Default Timeout 5. *)
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Section sec.
+Context {𝒰 : Type}.
+
+Example example_2_1_8 (X : subset 𝒰) : X ⊆ X.
+Proof.
+We need to show that ∀ x ∈ X, x ∈ X.
+Take x ∈ X.
+We conclude that x ∈ X.
+Qed.
+
+
+Lemma exercise_2_1_27 (X : subset 𝒰) : ∅ ⊆ X.
+Proof.
+Admitted.
+
+
+Declare Scope empty_set_of_universe.
+Notation "∅" := (Ensembles.Empty_set 𝒰) : empty_set_of_universe.
+
+Open Scope empty_set_of_universe.
+```
+
+```
+</hint>
+
+In Waterproof, the powerset of `X` is denoted as `𝒫(X)`, and `A ∈ 𝒫(X)` is by definition equivalent to `A ⊆ X`.
+From this, you can use `It suffices to show that ...` or `We conclude that ...` if the statement `A ∈ 𝒫(X)` is in the goal, and you can use `It holds that ...` or `We conclude that ...` if the statement `A ∈ 𝒫(X)` is in the assumptions.
+In both cases, Waterproof will automatically use the definition of the power set to complete the proof step.
+Below are two examples.
+
+```coq
+Lemma definition2_1_28_example (X Y : subset 𝒰): X ⊆ Y ⇔ X ∈ 𝒫(Y).
+Proof.
+We show both directions.
+- We need to show that X ⊆ Y ⇨ X ∈ 𝒫(Y).
+  Assume that X ⊆ Y.
+  We conclude that X ∈ 𝒫(Y).
+- We need to show that X ∈ 𝒫(Y) ⇨ X ⊆ Y.
+  Assume that X ∈ 𝒫(Y).
+  We conclude that X ⊆ Y. 
+Qed.
+```
+Below are several exercises on powersets.
+
+```coq
+Lemma exercise_2_1_31a (X : subset 𝒰): ∅ ∈ 𝒫(X).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+
+Lemma exercise_2_1_31b (X : subset 𝒰): X ∈ 𝒫(X).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+```coq
+Lemma exercise2_1_34 (X Y : subset 𝒰): X ⊆ Y ⇒ 𝒫(X) ⊆ 𝒫(Y).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+
+Below are two options for exercise 2.1.36a; only one of them is true. Prove the one that is true.
+
+```coq
+Lemma exercise_2_1_36a_true: 𝒫(∅) ∈ 𝒫(𝒫(∅)).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+
+Lemma exercise_2_1_36a_false: 𝒫(∅) ∉ 𝒫(𝒫(∅)).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

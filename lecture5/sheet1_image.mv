@@ -1,0 +1,119 @@
+# 3.1 Functions<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Functions.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Functions.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+
+From Coq Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+Open Scope function_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Waterproof Disable Filter Errors.
+
+Section sec.
+Context {𝒰 : Type}.
+Context {X Y : Type}.
+```
+</hint>
+
+## Example 3.1.35
+
+```coq
+Example example_3_1_35 (g : X → Y) (U V : subset X) :
+  g[U ∩ V] ⊆ g[U] ∩ g[V].
+Proof.
+It suffices to show that ∀ y ∈ g[U ∩ V], y ∈ g[U] ∩ g[V].
+Take y ∈ g[U ∩ V].
+It holds that ∃ x ∈ (U ∩ V), y = g x.
+Obtain such an x.
+It holds that x ∈ U ∧ x ∈ V.
+It suffices to show that y ∈ g[U] ∧ y ∈ g[V].
+We show both statements.
+- We need to show that y ∈ g[U].
+  It suffices to show that ∃ z : X, In X U z ∧ y = g z.
+  Choose z := x.
+  We conclude that In X U z ∧ y = g z.
+- We need to show that y ∈ g[V].
+  It suffices to show that ∃ w : X, In X V w ∧ y = g w.
+  Choose w := x.
+  We conclude that In X V w ∧ y = g w.
+Qed.
+```
+
+## Exercise 3.1.36
+
+Due to technicalities, if the statement is false, 
+it is hard to prove the correctness of the counterexample in Waterproof.
+If the statement is true, you can simply prove it as usual. However, note that not all three parts of this exercise need to be provable.
+
+### Part (a): g[U] ∩ g[V] ⊆ g[U ∩ V]
+
+```coq
+Lemma exercise_3_1_36a_true (g : X → Y) (U V : subset X) :
+  g[U] ∩ g[V] ⊆ g[U ∩ V].
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+### Part (b): g[U ∪ V] ⊆ g[U] ∪ g[V]
+
+```coq
+Lemma exercise_3_1_36b_true (g : X → Y) (U V : subset X) :
+  g[U ∪ V] ⊆ g[U] ∪ g[V].
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+### Part (c): g[U] ∪ g[V] ⊆ g[U ∪ V]
+
+
+```coq
+Lemma exercise_3_1_36c_true (g : X → Y) (U V : subset X) :
+  g[U] ∪ g[V] ⊆ g[U ∪ V].
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

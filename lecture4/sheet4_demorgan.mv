@@ -1,0 +1,78 @@
+# 2.2 Sets<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Reals.ArchimedN.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+Require Import Coq.Reals.Reals.
+Require Import Coq.micromega.Lra.
+Require Import Coq.micromega.Lia.
+
+
+Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+
+Section sec.
+Context {𝒰 : Type}.
+Context (I : Type).
+```
+</hint>
+
+
+The following example proofs one of de Morgan's laws for sets, which establish the relationship between complements and set operations.
+
+## Theorem 2.2.33a: de Morgan's Law for Union
+
+```coq
+Theorem theorem2_2_33a (X A B : subset 𝒰) : 
+  X \ (A ∪ B) = (X \ A) ∩ (X \ B).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+
+
+```coq
+Lemma exercise2_2_34b (X A B : subset 𝒰) : 
+  X \ (A ∩ B) = (X \ A) ∪ (X \ B).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

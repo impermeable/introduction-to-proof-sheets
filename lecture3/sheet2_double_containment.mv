@@ -1,0 +1,124 @@
+# 2.1 Sets<hint title="📦 Import libraries (click to open/close)">
+```coq
+Check eq_ind.
+
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+Require Import Coq.Reals.Reals.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Set Default Timeout 5. *)
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Section sec.
+Context {𝒰 : Type}.
+```
+</hint>
+
+Below is a lemma that is not in the book, but is used in the proof of Example 2.1.16.
+
+```coq
+Lemma multiplication_dichotomy (a b : ℝ) (h : a*b ≥ 0) : 
+  (a ≥ 0 ∧ b ≥ 0) ∨ (a ≤ 0 ∧ b ≤ 0).
+Proof.
+Either a ≥ 0 or a ≤ 0.
+- Case a ≥ 0.
+  Either b ≥ 0 or b ≤ 0.
+  + Case b ≥ 0.
+    It suffices to show that a ≥ 0 ∧ b ≥ 0.
+    We conclude that a ≥ 0 ∧ b ≥ 0.
+  + Case b ≤ 0.
+    We argue by contradiction.
+    Assume that ¬ (a ≥ 0 ∧ b ≥ 0 ∨ a ≤ 0 ∧ b ≤ 0).
+    It holds that (a < 0 ∨ b < 0) ∧ (a > 0 ∨ b > 0).
+    Contradiction.
+- Case a ≤ 0.
+  Either b ≥ 0 or b ≤ 0.
+  + Case b ≥ 0.
+    We argue by contradiction.
+    Assume that ¬ (a ≥ 0 ∧ b ≥ 0 ∨ a ≤ 0 ∧ b ≤ 0).
+    It holds that (a < 0 ∨ b < 0) ∧ (a > 0 ∨ b > 0).
+    Contradiction.
+  + Case b ≤ 0.
+    It suffices to show that a ≤ 0 ∧ b ≤ 0.
+    We conclude that a ≤ 0 ∧ b ≤ 0.
+Qed.
+```
+
+Below is an example of how to do a proof by double containment (2.1.15) in Waterproof.
+This can be done by using `It suffices to show that`.
+This also shows how you can refer to an earlier result in Waterproof using `By ... it holds that ...`.
+
+
+```coq
+Example example_2_1_16 : {x ∈ ℝ | x^2 ≤ 1} = [-1,1].
+Proof.
+It suffices to show that {x ∈ ℝ | x^2 ≤ 1} ⊆ [-1, 1] 
+  ∧ [-1, 1] ⊆ {x ∈ ℝ | x^2 ≤ 1}.
+We show both statements.
+- We need to show that {x ∈ ℝ | x^2 ≤ 1} ⊆ [-1, 1].
+  It suffices to show that ∀ x ∈ {x ∈ ℝ | x^2 ≤ 1}, x ∈ [-1,1].
+  Take x ∈ {x ∈ ℝ | x^2 ≤ 1}.
+  It holds that (1 - x)*(1 + x) ≥ 0.
+  By multiplication_dichotomy it holds that (1-x ≥ 0 ∧ 1+x ≥ 0) 
+    ∨ (1-x ≤ 0 ∧ 1+x ≤ 0).
+  Either (1-x ≥ 0 ∧ 1 + x ≥ 0) or (1-x ≤ 0 ∧ 1 + x ≤ 0).
+  + Case 1-x ≥ 0 ∧ 1 + x ≥ 0.
+    We conclude that x ∈ [-1,1].
+  + Case 1-x ≤ 0 ∧ 1 + x ≤ 0.
+    Contradiction.
+- We need to show that [-1,1] ⊆ {x ∈ ℝ | x^2 ≤ 1}.
+  It suffices to show that ∀ x ∈ [-1, 1], x ∈ {x ∈ ℝ | x^2 ≤ 1}.
+  Take x ∈ [-1,1].
+  It suffices to show that x^2 ≤ 1.
+  It holds that |x| ≤ 1.
+  We conclude that & x^2 = |x|^2 ≤ 1.
+Qed.
+```
+
+Below are two exercises to practice proof by double containment (2.1.15). 
+
+```coq
+Lemma exercise_2_1_17 : {x ∈ ℝ | x*x < x} = (0, 1).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+```coq
+Lemma exercise_2_1_18a : {0, 1} = {1, 0}.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

@@ -1,0 +1,149 @@
+# 2.2 Sets<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Reals.ArchimedN.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+Require Import Coq.Reals.Reals.
+Require Import Coq.micromega.Lra.
+Require Import Coq.micromega.Lia.
+
+
+Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+
+Section sec.
+Context {𝒰 : Type}.
+```
+</hint>
+
+## Example 2.2.15
+
+Below an example of indexed operations. These use the notations
+`⋂_{...} ...` and `⋃_{...} ...` for indexed intersections and
+unions respectively. Note that these use the big versions of the
+regular union and intersection: They are not the same symbol as before.
+
+These exercises also feature mixing of natural and real numbers.
+In this case, the default is to use real numbers, which means
+that `%nat` needs to be used to explicitly mark natural numbers.
+
+```coq
+Example example_2_2_15 : 
+  (⋂_{n ≥ 1%nat} [0, 1+1/n)) = [0,1].
+Proof.
+It suffices to show that (⋂_{n ≥ 1%nat} [0, 1+1/n) ⊆ [0,1] 
+  ∧ [0,1] ⊆ ⋂_{n ≥ 1%nat} [0, 1+1/n)).
+We show both statements.
+- We need to show that (⋂_{ n ≥ 1%nat} [0, 1 + 1 / n) ⊆ [0, 1]).
+  It suffices to show that 
+    (∀ x ∈ ⋂_{ n ≥ 1%nat} [0, 1 + 1 / n), x ∈ [0, 1]).
+  Take x ∈ ⋂_{ n ≥ 1%nat} [0, 1 + 1 / n).
+  It holds that ∀ n ≥ 1%nat, x ∈ [0, 1 + 1/n) as (i).
+  Use n := 1%nat in (i).
+  { Indeed, (1 ≥ 1)%nat. }
+  It holds that x ∈ [0, 1 + 1 / 1%nat).
+  It holds that 1 + 1 / 1%nat = 2.
+  It holds that x ∈ [0, 2).
+  It holds that x ≥ 0.
+  It suffices to show that x ≤ 1.
+  We argue by contradiction.
+  Assume that ¬ x ≤ 1.
+  It holds that x > 1.
+  It holds that x - 1 > 0.
+  By the Archimedean property it holds that 
+    ∃n ∈ ℕ, n > 1/(x-1).
+  Obtain such n.
+  It holds that n>1/(x-1).
+  It holds that &n > 1/(x-1) > 0.
+  It holds that & n*(x-1)>1/(x-1)*(x-1) = 1.
+  It holds that x-1 > 1/n.
+  It holds that x > 1 + 1/n.
+  Use n:=n in (i).
+  { 
+    We need to verify that (n ≥ 1)%nat.
+    It holds that & n > 1/(x-1) > 0.
+    It holds that n ≥ 1.
+    We conclude that (n ≥ 1)%nat.
+  }
+  It holds that x ∈ [0, 1 + 1/n).
+  It holds that x < 1 + 1/n.
+  It holds that (x > 1 + 1/n) ∧ ¬(x > 1 + 1/n).
+  Contradiction.
+- We need to show that [0, 1] ⊆ ⋂_{ n ≥ 1%nat} [0, 1 + 1 / n).
+  It suffices to show that 
+    ∀ x ∈ [0,1], x ∈ ⋂_{n ≥ 1%nat} [0,1 + 1/n).
+  Take x ∈ [0,1].
+  It suffices to show that ∀ n ≥ 1%nat, x ∈ [0,1 + 1/n).
+  Take n ≥ 1%nat.
+  It holds that x ≥ 0.
+  It holds that n ≥ 1%nat.
+  It holds that n ≥ 1.
+  It holds that & n ≥ 1 > 0.
+  It holds that 1/n > 0.
+  It holds that & x ≤ 1 < 1 + 1/n.
+  We conclude that x ∈ [0, 1 + 1/n).
+Qed.
+```
+
+## Exercise 2.2.25
+
+```coq
+Lemma exercise2_2_25 : 
+  ⋃_{n ≥ 1%nat} [0, 1-1/n] is a single interval.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Open Scope nat_scope.
+```
+</hint>
+
+## Exercise 2.2.26a
+
+```coq
+Lemma exercise2_2_26a : ⋂_{n ∈ ℕ} [n] = ∅.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+

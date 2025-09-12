@@ -1,0 +1,147 @@
+# 2.2 Sets<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Reals.ArchimedN.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+Require Import Coq.Reals.Reals.
+Require Import Coq.micromega.Lra.
+Require Import Coq.micromega.Lia.
+
+
+Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+
+Section sec.
+Context {𝒰 : Type}.
+
+Declare Scope empty_set_of_universe.
+Notation "∅" := (Ensembles.Empty_set 𝒰) : empty_set_of_universe.
+
+Open Scope empty_set_of_universe.
+
+```
+</hint>
+
+To prove statements using unions (∪) can be done in Waterproof using `It holds that ...`, `It suffices to show that ...` and `We conclude that ...`.
+All of these use the following equivalence.
+
+$x ∈ A ∪ B ↔ x ∈ A ∨ x ∈ B$
+
+Note this is similar to intersection, but instead of conjunctions (and), it uses disjunctions (or).
+Below are exercises using unions.
+
+## Exercise 2.2.20
+
+```coq
+Lemma exercise_2_2_20 : [-2, 5) ∪ [4,7) is a single interval.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+## Exercise 2.2.21
+
+```coq
+Lemma exercise_2_2_21 (X Y : subset 𝒰) : X ⊆ Y ↔ X ∪ Y = Y.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+## Example 2.2.22
+
+```coq
+Example example_2_2_22 (X Y W : subset 𝒰) : 
+  X ∩ (Y ∪ W) = (X ∩ Y) ∪ (X ∩ W).
+Proof.
+It suffices to show that X ∩ (Y ∪ W) ⊆ ((X ∩ Y) ∪ (X ∩ W)) 
+  ∧ (X ∩ Y) ∪ (X ∩ W) ⊆ (X ∩ (Y ∪ W)).
+We show both statements.
+- We need to show that X ∩ (Y ∪ W) ⊆ ((X ∩ Y) ∪ (X ∩ W)).
+  It suffices to show ∀ a ∈ (X ∩ (Y ∪ W)), a ∈ ((X ∩ Y) ∪ (X ∩ W)).
+  Take a ∈ X ∩ (Y ∪ W).
+  It holds that a ∈ X ∧ a ∈ Y ∪ W.
+  It holds that a ∈ Y ∨ a ∈ W.
+  Either a ∈ Y or a ∈ W.
+  + Case a ∈ Y.
+    It suffices to show a ∈ X ∩ Y ∨ a ∈ X ∩ W.
+    It suffices to show a ∈ X ∧ a ∈ Y.
+    We conclude that a ∈ X ∧ a ∈ Y.
+  + Case a ∈ W.
+    It suffices to show a ∈ X ∩ Y ∨ a ∈ X ∩ W.
+    It suffices to show a ∈ X ∩ W.
+    It suffices to show a ∈ X ∧ a ∈ W.
+    We conclude that a ∈ X ∧ a ∈ W.
+- We need to show that (X ∩ Y) ∪ (X ∩ W) ⊆ (X ∩ (Y ∪ W)).
+  It suffices to show ∀ a ∈ (X ∩ Y) ∪ (X ∩ W), a ∈ (X ∩ (Y ∪ W)).
+  Take a ∈ (X ∩ Y) ∪ (X ∩ W).
+  It suffices to show a ∈ X ∧ a ∈ Y ∪ W.
+  It holds that a ∈ X ∩ Y ∨ a ∈ X ∩ W.
+  Either a ∈ X ∩ Y or a ∈ X ∩ W.
+  + Case a ∈ (X ∩ Y).
+    It holds that a ∈ X ∧ a ∈ Y. 
+    It holds that a ∈ X.
+    It holds that a ∈ Y ∨ a ∈ W.
+    It holds that a ∈ Y ∪ W.
+    We conclude that a ∈ X ∧ a ∈ Y ∪ W.
+  + Case a ∈ (X ∩ W).
+    It holds that a ∈ X ∧ a ∈ W. 
+    It holds that a ∈ X.
+    It holds that a ∈ Y ∨ a ∈ W.
+    It holds that a ∈ Y ∪ W.
+    We conclude that a ∈ X ∧ a ∈ Y ∪ W.
+Qed.
+```
+
+## Exercise 2.2.23
+
+```coq
+Lemma exercise_2_2_23 (X Y W : subset 𝒰) : 
+  X ∪ (Y ∩ W) = (X ∪ Y) ∩ (X ∪ W).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

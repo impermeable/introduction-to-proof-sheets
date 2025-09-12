@@ -1,0 +1,158 @@
+# 1.1 Propositional logic<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Waterproof.Libs.Integers.Divisibility.
+Require Import Waterproof.Libs.Reals.Rational.
+
+Require Import Coq.Reals.Reals.
+
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+Open Scope subset_scope.
+Open Scope R_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Waterproof Enable Automation RealsAndIntegers.
+
+Waterproof Set Shorten Databases RealsAndIntegers wp_integers.
+```
+</hint>
+
+Welcome to the exercise sheets for Bewijzen in de Wiskunde.
+These sheets are designed to accompany the textbook Infinite Descent into Mathematics and are intended to help you learn the concepts through the use of Waterproof.
+
+Whenever you have a question about a mathematical concept, refer to the textbook. If you have a question about how to use Waterproof, first check these sheets. If you are still unsure, ask your teacher.
+
+Waterproof is a language developed to construct and verify mathematical proofs using a computer. You write your proofs in the input fields, and the system checks their correctness and provides feedback on any mistakes.
+
+These sheets include examples from the textbook as well as additional original examples. Exercises and examples taken directly from the textbook are named accordingly. For instance, the exercise below is named `example1_1_1`, which corresponds to Example 1.1.1 in the textbook.
+
+Some exercises from the book are not included here.
+We have also added some custom exercises that we believe help illustrate how Waterproof works. When practicing, remember to also review the exercises in the textbook, as some of those, though not included here, are still important.
+
+Below is Example 1.1.1.
+In the textbook, this proof is presented step by step to show how assumptions and goals change throughout the process.
+Waterproof provides an overview of the current goal on the right side of the screen.
+The goal shown will update dynamically based on the position of your cursor in the proof.
+
+Use the example below to explore how the goal changes by clicking in the proof and moving your cursor up and down. The specific proof techniques used in this example will be explained in later sections.
+
+```coq
+Example example1_1_1 (a b c : ℤ) : 
+  c | b ⇒ b | a ⇒ c | a.
+Proof.
+Assume that c | b as (i).
+Assume that b | a as (ii).
+By (i) it holds that ∃ n ∈ ℤ, b = n * c.
+Obtain such n.
+By (ii) it holds that ∃ m ∈ ℤ, a = m * b. 
+Obtain such m.
+It holds that c * (n * m) = a.
+It suffices to show that ∃ k ∈ ℤ, a = k * c.
+Choose k := n*m.
+{ Indeed, k ∈ ℤ. }
+We conclude that a = k * c.
+Qed.
+```
+<hint title="📦 Technical details">
+```coq
+Waterproof Disable Automation RealsAndIntegers.
+Waterproof Enable Automation Empty.
+
+Waterproof Declare Automation Logic.
+Waterproof Set Main Databases Logic nocore, wp_prop_logic.
+Waterproof Set Decidability Databases Logic nocore, wp_prop_logic.
+Waterproof Set Shorten Databases Logic nocore, wp_prop_logic, wp_integers.
+
+Waterproof Enable Automation Logic.
+```
+</hint>
+
+The following example is an example of one that is not in the book.
+
+We prove conjunctions by typing `We show both statements`, after which we demonstrate that the left and right propositions are true using subproofs.
+These subproofs begin with a bullet point. You can use `-`, `+`, or `*` as bullet symbols.
+We conclude each subproof by typing `We conclude that [statement]`, where `[statement]` is the proposition included in our assumptions.
+
+Note that the proof begins with `Assume that p, q and r`. We will discuss these lines later, but for now, understand that they add statements to our assumptions.
+
+```coq
+Example example1_1_8 (p q r : Prop) : 
+  p ⇒ q ⇒ r ⇒ (p ∧ q) ∧ r.
+Proof.
+Assume that p, q and r.
+We show both statements.
+- We need to show that p ∧ q.
+  We show both statements.
+  + We conclude that p.
+  + We conclude that q.
+- We conclude that r.
+Qed.
+```
+
+Below is how to assume conjunctions (Strategy 1.1.10) in Waterproof.
+Note that this is done implicitly: at the line `It holds that p`, Waterproof verifies that you can derive `p` from `p ∧ q`.
+After this line, it is added to your assumptions.
+
+```coq
+Example example1_1_11 (p q : Prop) : 
+  p ∧ q ⇒ q ∧ p.
+Proof.
+Assume that p ∧ q.
+It holds that p.
+It holds that q.
+We show both statements.
+- We conclude that q.
+- We conclude that p.
+Qed.
+```
+
+Use the tactics in these examples to finish the following exercises.
+Note that the assumptions are done for us in the first line.
+
+```coq
+Waterproof Enable Debug Automation.
+Lemma exercise1_1_13 (p q r : Prop) : 
+  (p ∧ q) ∧ r ⇒ q. 
+Proof.
+Assume that (p ∧ q) ∧ r.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+```coq
+Lemma exercise1_1_14 (p q r s : Prop) : 
+  p ⇒ q ⇒ r ⇒ s ⇒ (p ∧ q) ∧ (r ∧ s).
+Proof.
+Assume that p, q, r and s.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

@@ -1,0 +1,101 @@
+# 3.1 Injections and Surjections <hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Functions.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Functions.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+
+From Coq Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+Open Scope function_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Section sec.
+Context {𝒰 : Type}.
+Context {X Y Z : Type}.
+
+```
+</hint>
+
+## Proposition 3.2.4
+
+Let f : X → Y and g : Y → Z be functions. If both f and g are injective, then g ∘ f is injective.
+
+```coq
+Proposition composition_injective (f : X → Y) (g : Y → Z) :
+   f is injective → g is injective → g ∘ f is injective.
+Proof.
+Assume that f is injective as (i).
+Assume that g is injective as (ii).
+It suffices to show that 
+  ∀ a ∈ X, ∀ b ∈ X, (g ∘ f) a = (g ∘ f) b → a = b.
+Take a ∈ X and b ∈ X.
+Assume that (g ∘ f) a = (g ∘ f) b.
+It holds that g (f a) = g (f b).
+By (ii) it holds that f a = f b.
+By (i) it holds that a = b.
+We conclude that a = b.
+Qed.
+```
+## Exercise 3.2.5
+
+```coq
+Lemma exercise_3_2_5 (f : X → Y) (g : Y → Z) :
+  (g ∘ f) is injective → f is injective.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+From Coq Require Import Reals.Reals.
+Waterproof Enable Automation RealsAndIntegers.
+```
+</hint>
+
+
+## Exercise 3.2.8
+
+For technical reasons, we don't use the name `f` here, but instead describe the function in the theorem.
+
+```coq
+Lemma exercise_3_2_8 :
+  ∀ a ∈ R, ∀ b ≠ 0, (fun t => a+b*t) is injective.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

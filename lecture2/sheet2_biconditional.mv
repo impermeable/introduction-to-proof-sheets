@@ -1,0 +1,94 @@
+# 1.1 Propositional logic<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Waterproof.Libs.Integers.Divisibility.
+Require Import Waterproof.Libs.Reals.Rational.
+
+Require Import Coq.Reals.Reals.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope subset_scope.
+Open Scope R_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Waterproof Enable Automation RealsAndIntegers.
+Waterproof Set Shorten Databases RealsAndIntegers wp_integers.
+
+Open Scope R_scope.
+```
+</hint>
+
+Now that we have discussed different strategies for conjunctions, disjunctions, and implications, we can also define new logical connectives, such as the biconditional operator (1.1.40).
+
+The biconditional is defined as follows:
+```
+Definition iff (A B : Prop) := (A ⇒ B) ∧ (B ⇒ A).
+```
+This is represented by the notation `A ↔ B`.
+
+If you have an assumption of this form, you can type `It holds that (A ⇒ B) ∧ (B ⇒ A)`, and this will be added to your assumptions. From there, you can use other strategies to work with the assumption.
+
+```coq
+Example example_1_1_41 (p q : Prop) : 
+  (p ↔ q) ⇒ q ⇒ p.
+Proof.
+Assume that p ↔ q and q.
+It holds that (p ⇒ q) ∧ (q ⇒ p).
+It holds that q ⇒ p.
+We conclude p.
+Qed.
+```
+
+The biconditional operator is used frequently in mathematics, so there is a special line you can type if you want to prove a biconditional operator:
+`We show both directions`.
+
+This is demonstrated in the following example.
+
+```coq
+Example example_1_1_42 (p q : Prop) : 
+  p ⇒ q ⇒ (p ↔ q).
+Proof.  
+Assume that p and q.
+We show both directions.
+- We need to show that p ⇒ q.
+  Assume that p.
+  We conclude q.
+- We need to show that q ⇒ p.
+  Assume that q.
+  We conclude p.
+Qed.
+
+```
+
+Below is an exercise to practice working with biconditional operators.
+
+```coq
+Lemma exercise_1_1_43 (p q r : Prop) : 
+  (p ↔ q) ↔ (q ↔ p).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

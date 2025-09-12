@@ -1,0 +1,158 @@
+# 2.1 Sets<hint title="📦 Import libraries (click to open/close)">
+```coq
+Check eq_ind.
+
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+Require Import Coq.Reals.Reals.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Set Default Timeout 5. *)
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Section sec.
+Context {𝒰 : Type}.
+```
+</hint>
+
+Below is an example of how Waterproof proves that a set is empty.
+This is done by assuming there is an element and then finding a contradiction.
+
+<hint title="📦 Technical details">
+```coq
+Open Scope nat_scope.
+```
+</hint>
+
+```coq
+Example example_2_1_22 : [0] is empty.
+Proof.
+It suffices to show ∀ x ∈ [0], False.
+Take x ∈ [0].
+It holds that x < 0.
+Contradiction.
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Close Scope nat_scope.
+Open Scope R_scope.
+```
+</hint>
+
+Below are four exercises to practice using empty sets.
+
+```coq
+Lemma exercise_2_1_23a (a b : ℝ) : [a,b] is empty ↔ a > b.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+```coq
+Lemma exercise_2_1_23b (a b : ℝ) : (a, b) is empty ↔ a ≥ b.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+
+Lemma exercise_2_1_24a (E : subset 𝒰) (p : 𝒰 → Prop) : 
+  E is empty ⇒ ∀ x ∈ E, p(x). 
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+
+Lemma exercise_2_1_24b (E : subset 𝒰) (p : 𝒰 → Prop) : 
+  E is empty ⇒ ¬ ∃ x ∈ E, p(x). 
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+Until now, we have proved statements about whether sets are empty, but it turns out there can only be one empty set.
+This is proved by the following theorem.
+
+```coq
+Theorem theorem_2_1_25 (E E' : subset 𝒰) : 
+  E is empty ⇒ E' is empty ⇒ E = E'.
+Proof.
+Assume that E is empty.
+Assume that E' is empty.
+It suffices to show E ⊆ E' ∧ E' ⊆ E.
+We show both statements.
+- We need to show that E ⊆ E'.
+  It suffices to show that ∀ x ∈ E, x ∈ E'.
+  By exercise_2_1_24a we conclude that ∀ x ∈ E, x ∈ E'. 
+- We need to show that E' ⊆ E.
+  It suffices to show that ∀ x ∈ E', x ∈ E.
+  By exercise_2_1_24a we conclude that ∀ x ∈ E', x ∈ E.
+Qed.
+```
+<hint title="📦 Technical details">
+```coq
+Declare Scope empty_set_of_universe.
+Notation "∅" := (Ensembles.Empty_set 𝒰) : empty_set_of_universe.
+
+Open Scope empty_set_of_universe.
+```
+</hint>
+
+From now on, we will use `∅` to denote the empty set.
+We can do this since there is only one empty set.
+Below is an exercise using `∅`.
+
+```coq
+Lemma exercise_2_1_27 (X : subset 𝒰) : ∅ ⊆ X.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

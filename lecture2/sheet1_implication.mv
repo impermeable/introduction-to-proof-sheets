@@ -1,0 +1,165 @@
+# 1.1 Propositional logic<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Waterproof.Libs.Integers.Divisibility.
+Require Import Waterproof.Libs.Reals.Rational.
+
+Require Import Coq.Reals.Reals.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope subset_scope.
+Open Scope R_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Waterproof Enable Automation RealsAndIntegers.
+
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+Waterproof Set Shorten Databases RealsAndIntegers wp_integers.
+```
+</hint>
+
+Below is an example of proving implications (1.1.28).
+This strategy has been applied for you so far.
+From now on, you will need to type `Assume that ...` yourself.
+
+```coq
+Example example_1_1_29 (p q : Prop) : p ⇒ q ⇒ p.
+Proof.
+Assume that p and q.
+We conclude that p.
+Qed.
+```
+
+Below is another example of proving implications (1.1.28).
+This example involves rational numbers, defined as follows:
+
+`x is rational` holds if `∃a ∈ ℤ, ∃b ∈ ℤ, 0 ≠ b ∧ x = a/b` holds.
+
+The symbol `∃` will be explained in detail in Section 1.2.
+This definition means that a number is rational if it can be written as a fraction of two integers, where the denominator is not zero (since division by zero is undefined).
+
+Thus, if you know that `x` is rational, there exist integers `a` and `b` such that `0 ≠ b` and `x = a/b`. To prove that `x` is rational, it is sufficient to have both `0 ≠ b` and `x = a/b` in your assumptions for some fixed `a` and `b`.
+
+<hint title="📦 Technical details">
+
+```coq
+
+Open Scope R_scope.
+Open Scope R2_scope.
+
+```
+</hint>
+
+```coq
+Lemma proposition1_1_23 (x y : ℝ) : 
+  x is rational ⇒ (x+y) is rational ⇒ y is rational.
+Proof.
+Assume that x is rational and x+y is rational.
+It holds that ∃a ∈ ℤ, ∃b ∈ ℤ, 0 ≠ b ∧ x = a/b.
+Obtain such an a, b.
+It holds that ∃c ∈ ℤ, ∃d ∈ ℤ, 0 ≠ d ∧ x+y = c/d.
+Obtain such a c, d.
+It holds that y = c/d - a/b.
+It holds that c/d - a/b = (c*b - a*d)/(b*d).
+It holds that y = (c*b - a*d)/(b*d).
+It holds that 0 ≠ b*d.
+We conclude that y is rational.
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Close Scope R2_scope.
+```
+</hint>
+
+Below are two exercises to practice proving implications (1.1.28).
+
+```coq
+Lemma exercise_1_1_32 (r s : Prop) : r ⇒ s ⇒ s.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+```coq
+Lemma exercise_1_1_33 (a b c : Prop) : 
+  a ∨ b ⇒ c ⇒ (c ∧ a) ∨ b.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+Below is an example of assuming implications (modus ponens, 1.1.34), which also uses `It holds that r`.
+
+Keep in mind that Waterproof automatically attempts to find the statements in the assumptions that are required to prove that `r` is true.
+
+```coq
+Example exercise_1_1_35 (p q r : Prop) : 
+    (((p ∨ q) ⇒ r) ∧ p) ⇒ r.
+Proof.
+Assume that ((p ∨ q) ⇒ r) ∧ p.
+It holds that p.
+It holds that p ∨ q.
+It holds that r.
+We conclude that r.
+Qed.
+```
+
+Below are two exercises that require assuming implications (1.1.34).
+```coq
+Lemma exercise_1_1_37 (p q r : Prop) : 
+    (p ⇒ q ⇒ r) ⇒ q ⇒ p ⇒ r.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+
+Lemma exercise_1_1_38 (p q r : Prop) : 
+  (p ⇒ p ∧ q) ⇒ (p ∨ q) ⇒ q.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

@@ -1,0 +1,134 @@
+
+# 1.2 Variables and quantifiers<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Coq.Reals.Reals.
+
+Open Scope subset_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Waterproof Enable Automation Empty.
+
+Waterproof Declare Automation Logic.
+Waterproof Set Main Databases Logic nocore, wp_prop_logic, wp_first_order_logic.
+Waterproof Set Decidability Databases Logic nocore, wp_prop_logic, wp_first_order_logic.
+Waterproof Set Shorten Databases Logic nocore, wp_prop_logic, wp_integers, wp_first_order_logic.
+
+Waterproof Enable Automation Logic.
+Waterproof Enable Automation RealsAndIntegers.
+
+Waterproof List Automation Databases.
+
+(* Set Default Timeout 10. *)
+```
+</hint>
+
+Example 1.2.25 shows how you can prove an existentially quantified
+statement, by providing an example and showing it works.
+Note that in Waterproof you explicitly need to remark that
+your choice indeed belongs to the domain of the quantifier,
+using `{ Indeed, n ∈ ℤ. }` in this case.
+
+This is often a formality, but sometimes needs some reasoning,
+in which case you can use `{ We need to verify that n ∈ ℤ. }` instead.
+
+```coq
+Example example_1_2_25 : 
+  ∃ n ∈ ℤ, (∃k ∈ ℤ, k*k=n) ∧ (∃l ∈ ℤ, l*l*l+1=n).
+Proof.
+Choose n := 9.
+{ Indeed, n ∈ ℤ. }
+We need to show that 
+  (∃k ∈ ℤ, k * k = n) ∧ (∃l ∈ ℤ, l * l * l + 1 = n).
+We show both statements.
+- We need to show that ∃ k ∈ ℤ, k * k = n.
+  Choose k := 3.
+  { Indeed, k ∈ ℤ. }
+  We conclude that & k * k = 3 * 3 = 9 = n.
+- We need to show that ∃ l ∈ ℤ, l * l * l + 1 = n.
+  Choose l := 2.
+  { Indeed, l ∈ ℤ. }
+  We conclude that & l * l * l + 1 = 2 * 2 * 2 + 1 = 9 = n.
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Open Scope R_scope.
+
+```
+</hint>
+
+```coq
+Lemma Proposition_1_2_26 : 
+  ∀ a ∈ ℝ, ∃ x ∈ ℝ, 
+    x*x*x + (1-a²)*x - a = 0.
+Proof.
+Take a ∈ ℝ.
+Choose x := a.
+{ Indeed, x ∈ ℝ. }
+We conclude that & x³ + (1-a²)*x - a 
+  = a³ + (1-a²)*a - a = a*a*a+(1-a*a)*a - a = 0.
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Open Scope Z_scope.
+```
+</hint>
+
+```coq
+Lemma exercise_1_2_28 : 
+  ∃n ∈ ℤ, n is divisible by 0.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+In Waterproof, an easy way to use existentially quantified assumptions is by using `Obtain such m.`, where `m` is the variable in the statement.
+
+```coq
+Lemma proposition_1_2_31 : 
+  ∀ n ∈ ℤ, 
+    n³ is divisible by 3 ⇒ 
+    (n+1)³-1 is divisible by 3.
+Proof.
+Take n ∈ ℤ.
+Assume that n³ is divisible by 3.
+It holds that ∃ m ∈ ℤ, n³=m*3.
+Obtain such m.
+It suffices to show that ∃ k ∈ ℤ, (n+1)³-1=k*3.
+It holds that (n+1)³-1 = n³+3*(n²+n).
+It holds that n³+3*(n²+n) = 3*m+3*(n²+n).
+It holds that 3*m+3*(n²+n) = 3*(m+n²+n).
+Choose k := m+n²+n.
+{ Indeed, k ∈ ℤ. }
+We conclude that (n+1)³-1=k*3.
+Qed.
+```
+

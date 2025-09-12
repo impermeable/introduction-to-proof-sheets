@@ -1,0 +1,105 @@
+# 3.1 Functions<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Functions.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Functions.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+
+From Coq Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+Open Scope function_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Waterproof Disable Filter Errors.
+
+Section sec.
+Context {𝒰 : Type}.
+Context {X Y : Type}.
+```
+</hint>
+
+## Example 3.1.39
+
+This example shows the interaction between image and preimage.
+
+```coq
+Example example_3_1_39 (f : X → Y) (U : subset X) (V : subset Y) :
+    (f[U] ⊆ V) ↔ (U ⊆ f⁻¹[V]).
+Proof.
+We show both directions.
++ We need to show that f [ U ] ⊆ V ⇨ U ⊆ f⁻¹[V].
+  Assume that f[U] ⊆ V as (i).
+  It suffices to show ∀ x ∈ U, x ∈ f⁻¹[V].
+  Take x ∈ U.
+  It holds that f(x) ∈ f[U].
+  By (i) it holds that ∀ x ∈ f[U], x ∈ V.
+  It holds that f(x) ∈ V.
+  We conclude that x ∈ f⁻¹[V].
++ We need to show that (U ⊆ f⁻¹[V]) ⇨ f [U] ⊆ V.
+  Assume that U ⊆ f⁻¹[V].
+  It suffices to show ∀ y ∈ f[U], y ∈ V.
+  Take y ∈ f[U].
+  It holds that ∃ x ∈ U, y = f(x).
+  Obtain such an x.
+  It holds that ∀ x ∈ U, x ∈ f⁻¹[V].
+  It holds that x ∈ f⁻¹[V].
+  It holds that f(x) ∈ V.
+  We conclude that y ∈ V.
+Qed.
+```
+
+## Exercise 3.1.40
+
+
+### Part (a): f⁻¹[∅] = ∅
+
+```coq
+Lemma exercise_3_1_40a (f : X → Y) :
+  f⁻¹[∅] = ∅.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+### Part (b): f⁻¹[Y] = X
+
+```coq
+Lemma exercise_3_1_40b (f : X → Y) :
+  f⁻¹[Y] = X.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

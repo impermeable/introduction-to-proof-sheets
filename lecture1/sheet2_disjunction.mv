@@ -1,0 +1,115 @@
+# 1.1 Propositional logic<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Waterproof.Libs.Integers.Divisibility.
+Require Import Waterproof.Libs.Reals.Rational.
+
+Require Import Coq.Reals.Reals.
+
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+Open Scope subset_scope.
+Open Scope R_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Waterproof Set Shorten Databases RealsAndIntegers wp_integers.
+
+Waterproof Enable Automation Empty.
+
+Waterproof Declare Automation Logic.
+Waterproof Set Main Databases Logic nocore, wp_prop_logic.
+Waterproof Set Decidability Databases Logic nocore, wp_prop_logic.
+Waterproof Set Shorten Databases Logic nocore, wp_prop_logic, wp_integers.
+
+Waterproof Enable Automation Logic.
+```
+</hint>
+
+Proving disjunctions (1.1.15) can be done in a similar way to assuming conjunctions (1.1.10).
+Although they involve very different strategies, both use the phrase `It holds that [statement]`, as demonstrated in `example1_1_15`.
+
+The first approach is used when you want to prove a disjunction (an 'or' statement), while the second is used when a conjunction (an 'and' statement) is already present in the assumptions.
+
+Note that Waterproof automatically infers which rule to apply when you write `It holds that ...`.
+
+```coq
+Example example1_1_18left (p q r s : Prop) : 
+  p ⇒ r ⇒ (p ∨ q) ∧ (r ∨ s).
+Proof.
+Assume that p and r.
+It holds that p ∨ q.
+It holds that r ∨ s.
+We show both statements.
+- We conclude p ∨ q.
+- We conclude r ∨ s.
+Qed.
+```
+
+Do the exercise below to practice proving disjunctions (1.1.16). This exercise is not in the book.
+
+```coq
+Lemma strategy_1_1_13_extra_ex (p q r : Prop) : 
+  p ⇒ (p ∨ q) ∨ r.
+Proof.
+Assume that p.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+Below is an example of assuming disjunctions (proof by cases, 1.1.19).
+This is done by using `Either [statement] or [statement]`.
+
+```coq
+Example example_1_1_20 (p q r : Prop) : 
+  (p ∨ q) ∧ r ⇒ p ∨ (q ∧ r).
+Proof.
+Assume that (p ∨ q) ∧ r.
+It holds that p ∨ q.
+It holds that r.
+Either p or q.
+- Case p.
+  We conclude p ∨ (q ∧ r).
+- Case q.
+  It holds that q ∧ r.
+  We conclude p ∨ (q ∧ r).
+Qed.
+```
+
+Do the exercise below to practice using proof by cases.
+
+```coq
+Lemma exercise_1_1_21 (p q r : Prop) : 
+  (q ∨ r) ⇒ (p ∨ q) ∨ (p ∨ r).
+Proof.
+Assume that q ∨ r.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

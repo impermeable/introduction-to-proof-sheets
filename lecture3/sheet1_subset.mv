@@ -1,0 +1,107 @@
+# 2.1 Sets<hint title="📦 Import libraries (click to open/close)">
+```coq
+Check eq_ind.
+
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+Require Import Coq.Reals.Reals.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Set Default Timeout 5. *)
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Section sec.
+Context {𝒰 : Type}.
+```
+</hint>
+
+This exercise sheet is for Section 2.1 Sets from the book Infinite Descent into Mathematics.
+Before starting this exercise sheet, first read and complete the exercises from the book up to the section on subsets.
+Some exercises in the book ask for set builder notation or specific elements of certain sets; these types of questions are not included in this sheet.
+This sheet only contains questions that ask you to prove a statement.
+
+The example below shows how you can unfold a definition.
+This is done by using `It suffices to show that ...` or `We need to show that ...` if the definition is in the goal.
+In this case, it unfolds the definition of ⊆ (subset).
+
+```coq
+Example example_2_1_8 (X : subset 𝒰) : X ⊆ X.
+Proof.
+We need to show that ∀ x ∈ X, x ∈ X.
+Take x ∈ X.
+We conclude that x ∈ X.
+Qed.
+```
+
+Below is another example of unfolding the definition of ⊆ in the goal.
+
+```coq
+Example example_2_1_9 (a b c d : ℝ) :
+    a < c → c < d → d < b → [c, d] ⊆ (a, b).
+Proof.
+Assume that a < c, c < d and d < b.
+We need to show that ∀ x ∈ [c, d], x ∈ (a, b).
+Take x ∈ [c, d].
+It holds that & a < c ≤ x.
+It holds that & x ≤ d < b.
+We conclude that x ∈ (a, b).
+Qed.
+```
+
+Below is an exercise on working with subsets.
+
+```coq
+Lemma exercise_2_1_10 (a b c d : ℝ) :
+    a < b → c < d → [a,b) ⊆ (c, d] ↔ a > c ∧ b ≤ d.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+
+Below is another example, but here the subset definition is also unfolded while it is in the assumption.
+This is done by using `It holds that ...`.
+
+```coq
+Example proposition_2_1_12 (X Y W : subset 𝒰)
+    : X ⊆ Y ⇒ Y ⊆ W ⇒ X ⊆ W.
+Proof.
+Assume that X ⊆ Y.
+It holds that ∀ a ∈ X, a ∈ Y as (i).
+
+Assume that Y ⊆ W.
+It holds that ∀ a ∈ Y, a ∈ W as (ii).
+
+We need to show ∀ a ∈ X, a ∈ W.
+Take a ∈ X.
+
+We need to show a ∈ W.
+By (i) it holds that a ∈ Y.
+By (ii) we conclude that a ∈ W.
+Qed.
+```

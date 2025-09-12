@@ -1,0 +1,155 @@
+# 1.1 Propositional logic<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Integers.
+(* Require Import Waterproof.Notations.RealsWithSubsets. *)
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Waterproof.Libs.Integers.Divisibility.
+Require Import Waterproof.Libs.Reals.Rational.
+Require Import Waterproof.Libs.Reals.Integer.
+
+Require Import Coq.Reals.Reals.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope subset_scope.
+Open Scope Z_scope.
+(* Close Scope R2_scope. *)
+Open Scope R_scope.
+Waterproof Enable Automation RealsAndIntegers.
+
+Waterproof Set Shorten Databases RealsAndIntegers wp_integers.
+
+Declare Scope R2_scope.
+
+Notation "'ℤ'" := Z_in_R : R2_scope.
+Notation "'ℚ'" := Q_in_R : R2_scope.
+
+
+Notation "q 'is' 'rational'" := (is_rational q) (at level 70) : R_scope.
+
+
+Definition is_irrational (x : ℝ) : Prop := ¬ (is_rational x).
+
+Notation "q 'is' 'irrational'" := (is_irrational q) (at level 70) : R_scope.
+
+
+Local Ltac2 unfold_is_rational (statement : constr) := eval unfold is_rational in $statement.
+
+Ltac2 Notation "Expand" "the" "definition" "of" "rational" x(opt(seq("in", constr))) :=
+  wp_unfold unfold_is_rational (Some "rational") true x.
+Ltac2 Notation "_internal_" "Expand" "the" "definition" "of" "rational" x(opt(seq("in", constr))) :=
+  wp_unfold unfold_is_rational (Some "rational") false x.
+
+Local Ltac2 unfold_is_irrational (statement : constr) := eval unfold is_irrational in $statement.
+
+Ltac2 Notation "Expand" "the" "definition" "of" "irrational" x(opt(seq("in", constr))) :=
+  wp_unfold unfold_is_irrational (Some "irrational") true x.
+Ltac2 Notation "_internal_" "Expand" "the" "definition" "of" "irrational" x(opt(seq("in", constr))) :=
+  wp_unfold unfold_is_irrational (Some "irrational") false x.
+
+```
+</hint>
+
+Negation is defined in Waterproof as follows:
+```
+Definition not (A : Prop) := A ⇒ False.
+```
+
+To prove a negation, you can use `Assume that A` and then prove a contradiction.
+
+In Waterproof, to prove a contradiction, you need assumptions that contradict each other, then type `Contradiction`.
+
+An example is shown below.
+
+```coq
+Example example_1_1_54 (p q : Prop) : 
+  (p ⇒ q) ⇒ ¬q ⇒ ¬p.
+Proof.
+Assume that p ⇒ q and ¬q.
+Assume that p.
+It holds that q.
+Contradiction.
+Qed.
+```
+
+Below are two exercises using negations.
+
+```coq
+Lemma exercise_1_1_56 (p q : Prop) : 
+  (p ⇒ ¬q) ⇒ q ⇒ ¬p.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+```coq
+Lemma exercise_1_1_57 (p q : Prop) : 
+  ¬p ⇒ ¬q ⇒ ¬(p ∨ q).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+Below are exercises involving irrational numbers and proof by contradiction.
+Remember that a real number is irrational if it is not rational.
+If you want to use a chain of (in)equalities, you can
+do so like this: `It holds that & 1 = 1 < 6 ≤ 6 `.
+
+<hint title="📦 Techincal details">
+```coq
+Open Scope R2_scope.
+```
+</hint>
+
+```coq
+Lemma exercise_1_1_58a (x : ℝ) : 
+  x is irrational ⇒ -x is irrational.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+```coq
+Lemma exercise_1_1_58b (x : ℝ) : 
+  x ≠ 0 ⇒ x is irrational ⇒ 1/x is irrational.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

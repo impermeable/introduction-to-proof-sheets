@@ -1,0 +1,135 @@
+# 3.1 Injections and Surjections <hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Functions.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Functions.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+
+From Coq Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+Open Scope function_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Section sec.
+Context {𝒰 : Type}.
+Context {X Y Z : Type}.
+
+From Coq Require Import Reals.Reals.
+Waterproof Enable Automation RealsAndIntegers.
+
+```
+</hint>
+
+The example below is not in the book and shows how to
+prove that the identity has a left inverse.
+
+```coq
+Definition iden : R → R := fun x => x.
+Example example_left_inverse : has_left_inverse iden.
+Proof.
+We need to show that ∃ G : R → R, G is a left inverse of iden. 
+Choose G := fun (x : R) => x.
+It suffices to show that ∀ x ∈ R, G(iden(x)) = x.
+Take x ∈ R.
+We conclude that G(iden(x)) = x.
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+
+Close Scope R_scope.
+```
+</hint>
+**Exercise 3.2.21**
+
+```coq
+Lemma exercise_3_2_21 (F : X → Y) :
+  has_left_inverse F → F is injective.
+```
+
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+<hint title="📦 Technical details">
+```coq
+Open Scope R_scope.
+```
+</hint>
+
+**Exercise 3.2.39(a)**
+
+In the following exercises, you can use that
+`G is an inverse of F` is equivalent to
+`G is a left inverse of F ∧ G is a right inverse of F` .
+
+```coq
+Definition F : ℝ → ℝ := fun x => (2*x+1)/3.
+
+Lemma exercise_3_2_39a :
+  ∃ G : ℝ → ℝ, G is an inverse of F.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Close Scope R_scope.
+```
+</hint>
+
+**Exercise 3.2.39(b)**
+
+```coq
+Definition G : subset ℕ → subset ℕ := fun X => ℕ \ X.
+
+Lemma exercise_3_2_39b :
+  ∃ H : subset ℕ → subset ℕ, H is an inverse of G.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+
+
+
+

@@ -1,0 +1,171 @@
+
+# 1.2 Variables and quantifiers<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Coq.Reals.Reals.
+
+Open Scope subset_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Waterproof Enable Automation Empty.
+
+Waterproof Declare Automation Logic.
+Waterproof Set Main Databases Logic nocore, wp_prop_logic, wp_first_order_logic.
+Waterproof Set Decidability Databases Logic nocore, wp_prop_logic, wp_first_order_logic.
+Waterproof Set Shorten Databases Logic nocore, wp_prop_logic, wp_integers, wp_first_order_logic.
+
+Waterproof Enable Automation Logic.
+Waterproof Enable Automation RealsAndIntegers.
+
+Waterproof List Automation Databases.
+Open Scope R_scope.
+```
+</hint>
+
+```coq
+Example example1_2_36 : 
+  ∀a ∈ ℝ, a > 0 ⇒ 
+    ∃!b ∈ ℝ, b > 0 ∧ b² = a.
+Proof.
+Take a ∈ ℝ.
+Assume that a > 0.
+It suffices to show that (∃x ∈ ℝ, x > 0 ∧ x² = a) ∧ 
+  (∀x ∈ ℝ, ∀y ∈ ℝ, (x > 0 ∧ x² = a) ∧ 
+    (y > 0 ∧ y² = a) ⇒ x = y).
+We show both statements.
+- We need to show that ∃x ∈ ℝ, x > 0 ∧ x² = a.
+  Choose x := sqrt(a).
+  { Indeed, x ∈ ℝ. }
+  We need to show that x > 0 ∧ x² = a.
+  We show both statements.
+  + We conclude that x > 0.
+  + We conclude that x²=a.
+- We need to show that ∀x ∈ ℝ, ∀y ∈ ℝ, (x > 0 ∧ x² = a) ∧ 
+    (y > 0 ∧ y² = a) ⇒ x = y.
+  Take x ∈ ℝ.
+  Take y ∈ ℝ.
+  Assume that (x > 0 ∧ x² = a) ∧ (y > 0 ∧ y² = a).   
+  It holds that & (x+y)*(x-y)=x²-y²=a-a=0.
+  It holds that x+y=0 ∨ x-y=0.
+  Either x + y = 0 or x - y = 0.
+  + Case x + y = 0.
+    It holds that & 0 < x = -y.
+    It holds that y < 0.
+    Contradiction.
+  + Case x - y = 0.
+    We conclude that x = y.
+Qed.
+```
+
+
+
+```coq
+Lemma Proposition_1_2_38 {T : Type} 
+  (U : subset T) (P : T → Prop): 
+  (∃! x ∈ U, P(x)) ↔ 
+  (∃x ∈ U, P(x) ∧ ∀y ∈ U, P(y) ⇒ y = x).
+Proof.
+We show both directions.
+- We need to show that (∃!x ∈ U, P(x)) ⇒ 
+    ∃x' ∈ U, P(x') ∧ ∀y ∈ U, P(y) ⇒ y = x'.
+  Assume that ∃!x ∈ U, P(x).
+  It holds that (∃x ∈ U, P(x)) ∧ (∀x ∈ U, ∀y ∈ U, P(x) ∧ P(y) ⇒ x = y).
+  It holds that ∃x ∈ U, P(x).
+  Obtain such x.
+  Choose x' := x.
+  { Indeed, x' ∈ U. }
+  We need to show that P(x') ∧ (∀ y ∈ U, P(y) ⇨ y = x').
+  We show both statements.
+  + We conclude that P(x').
+  + We need to show that ∀y ∈ U, P(y) ⇒ y = x'.
+    Take y ∈ U.
+    Assume that P(y).
+    It holds that ∀x ∈ U, ∀y ∈ U, P(x) ∧ P(y) ⇒ x = y as (i).
+    Use x:=y in (i).
+    { Indeed, y ∈ U. }
+    It holds that ∀ y0 ∈ U, P(y) ∧ P(y0) ⇨ y = y0 as (ii).
+    Use y0:=x' in (ii).
+    { Indeed, x' ∈ U. }
+    It holds that P(y) ∧ P(x') ⇨ y = x'.
+    It holds that P(x').
+    It holds that P(y) ∧ P(x').
+    We conclude that y = x'.
+- We need to show that 
+    (∃x ∈ U, P(x) ∧ ∀y ∈ U, P(y) ⇒ y = x) ⇒ 
+    ∃!x' ∈ U, P(x').
+  Assume that ∃x' ∈ U, P(x') ∧ ∀y ∈ U, P(y) ⇒ y = x'.
+  Obtain such x'.
+  It suffices to show that (∃x ∈ U, P(x)) ∧ 
+    (∀x ∈ U, ∀y ∈ U, P(x) ∧ P(y) ⇒ x = y).
+  We show both statements.
+  + We need to show that ∃x ∈ U, P(x).
+    Choose x := x'.
+    { Indeed, x ∈ U. }
+    We conclude that P(x).
+  + We need to show that ∀x ∈ U, ∀y ∈ U, P(x) ∧ P(y) ⇒ x = y.
+    Take x ∈ U.
+    Take y ∈ U.
+    Assume that P(x) ∧ P(y).
+    It holds that P(x).
+    It holds that P(y).
+    It holds that ∀y ∈ U, P(y) ⇒ y = x' as (i).
+    Use y:=x in (i).
+    { Indeed, x ∈ U. }
+    It holds that P(x) ⇒ x = x'.
+    It holds that x = x'.
+    Use y:=y in (i).
+    { Indeed, y ∈ U. }
+    It holds that P(y) ⇒ y = x'.
+    It holds that y = x'.
+    We conclude that &x = x' = y.
+Qed.
+```
+
+
+```coq
+Lemma exercise1_2_37a : 
+  ∀a ∈ ℝ, ∃! x ∈ ℝ, x²+2*a*x+a²=0.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+## Exercise 1.2.37b
+
+```coq
+Lemma exercise1_2_37b : 
+  ∃! a ∈ ℝ, ∃x ∈ ℝ, x²+a²=0.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

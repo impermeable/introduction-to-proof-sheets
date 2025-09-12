@@ -1,0 +1,115 @@
+# 1.1 Propositional logic<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Waterproof.Libs.Integers.Divisibility.
+Require Import Waterproof.Libs.Reals.Rational.
+
+Require Import Coq.Reals.Reals.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope subset_scope.
+Open Scope R_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Waterproof Enable Automation RealsAndIntegers.
+
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+Waterproof Set Shorten Databases RealsAndIntegers wp_integers.
+```
+</hint>
+
+The law of excluded middle may be useful to prove some statements that are unprovable without it.
+To use the law of excluded middle, you can either use `Either [statement] or [statement]` immediately, or first use `It holds that [statement] ∨ ¬[statement]` and then use `Either [statement] or ¬[statement]`.
+
+```coq
+Example example_1_1_64 (p q : Prop) : ¬(p ∧ q) ⇒ ¬p ∨ ¬q.
+Proof.
+Assume that ¬(p ∧ q).
+Either p or ¬p.
+- Case p.
+  Either q or ¬q.
+-- Case q.
+   It holds that p ∧ q.
+   Contradiction.
+-- Case ¬q.
+   We conclude that ¬p ∨ ¬q.
+- Case ¬p.
+  We conclude that ¬p ∨ ¬q.
+Qed.
+```
+
+There is an exercise below where the law of excluded middle is necessary.
+
+```coq
+Lemma exercise_1_1_67 (p q : Prop) : 
+  (¬q ⇒ ¬p) ⇒ p ⇒ q.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Open Scope Z_scope.
+```
+</hint>
+
+Proposition 1.1.65 is an example of use of the law of the excluded middle.
+
+```coq
+Lemma proposition1_1_65 (a b : ℤ) : 
+  (a*b) is even ⇒ a is even ∨ b is even.
+Proof.
+Assume that (a*b) is even.
+Either a is even or a is odd.
+- Case a is even.
+  We conclude that a is even ∨ b is even.
+- Case a is odd.
+  Either b is even or b is odd.
+-- Case b is even.
+   We conclude that a is even ∨ b is even.
+-- Case b is odd.
+  We argue by contradiction.
+  Assume that ¬(a is even ∨ b is even).
+  It holds that ∃k ∈ ℤ, a = 2*k+1.
+  Obtain such k.
+  It holds that 2*k+1 = a.
+  It holds that ∃l ∈ ℤ, b = 2*l+1.
+  Obtain such l.
+  It holds that 2*l+1 = b.
+  It holds that a * b = (2*k+1)*(2*l+1).
+  It holds that (2*k+1)*(2*l+1) = 4*k*l+2*k+2*l+1.
+  It holds that 4*k*l+2*k+2*l+1 = 2*(2*k*l + k + l) + 1.
+  It holds that 2*(2*k*l + k + l) + 1 = a*b.
+  It holds that (a*b) is odd.
+  It holds that (a*b) is even ∧ (a*b) is odd.
+  Contradiction.
+Qed.
+```
+
+

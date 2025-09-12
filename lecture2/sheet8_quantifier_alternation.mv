@@ -1,0 +1,98 @@
+
+# 1.2 Variables and quantifiers<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Coq.Reals.Reals.
+
+Open Scope subset_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Waterproof Enable Automation Empty.
+
+Waterproof Declare Automation Logic.
+Waterproof Set Main Databases Logic nocore, wp_prop_logic, wp_first_order_logic.
+Waterproof Set Decidability Databases Logic nocore, wp_prop_logic, wp_first_order_logic.
+Waterproof Set Shorten Databases Logic nocore, wp_prop_logic, wp_integers, wp_first_order_logic.
+
+Waterproof Enable Automation Logic.
+Waterproof Enable Automation RealsAndIntegers.
+
+Waterproof List Automation Databases.
+
+(* Set Default Timeout 10. *)
+```
+</hint>
+
+```coq
+Lemma exercise_1_2_39a : 
+  ∀x ∈ ℤ, ∃y ∈ ℤ, (x+y) is even.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+## Exercise 1.2.39b
+
+```coq
+Lemma exercise_1_2_39b : 
+  ¬(∃y ∈ ℤ, ∀x ∈ ℤ, x+y is even).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+## Theorem 1.2.33
+
+Note that in the proof below, we rename the variables `x` and `y` to `x'` and `y'` in the goal using `It suffices to show`.
+This is because the names `x` and `y` in the statement refer to different things, which is mathematically valid because they are bound by the quantifiers. However, during the proof, these two roles can become intermingled. This is avoided by renaming the variables.
+
+```coq
+Lemma Theorem_1_2_33 (X Y : Type) (p : X → Y → Prop) : 
+  (∃y ∈ Y, ∀x ∈ X, p(x,y)) ⇒ 
+  ∀x ∈ X, ∃y ∈ Y, p(x,y).
+Proof.
+Assume that ∃y ∈ Y, ∀x ∈ X, p(x,y).
+Obtain such y.
+It holds that ∀x ∈ X, p(x,y) as (i).
+It suffices to show ∀ x' ∈ X, ∃ y' ∈ Y, p(x', y').
+Take x' ∈ X.
+Choose y' := y.
+{ Indeed, y' ∈ Y. }
+We need to show that p(x',y').
+Use x := x' in (i).
+{ Indeed, x' ∈ X. }
+It holds that p(x',y).
+We conclude that p(x',y').
+Qed.
+```
+

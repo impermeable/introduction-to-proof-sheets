@@ -1,0 +1,196 @@
+# 2.2 Sets<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Reals.ArchimedN.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+Require Import Coq.Reals.Reals.
+Require Import Coq.micromega.Lra.
+Require Import Coq.micromega.Lia.
+
+
+Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+
+Section sec.
+Context {𝒰 : Type}.
+```
+</hint>
+
+This exercise sheet is for Section 2.2 Set Operations from the book Infinite Descent into Mathematics.
+First, we will prove statements involving the intersection operation (∩).
+Waterproof can unfold `a ∈ X ∩ Y` using `It holds that ...`, `It suffices to show that ...`, and `We conclude that ...`.
+Below is an example.
+
+## Example 2.2.2
+
+<hint title="📦 Technical details">
+```coq
+Open Scope R2_scope.
+```
+</hint>
+
+```coq
+Example example_2_2_3 (x : ℝ) : 
+  x ∈ [0, ∞) ∩ ℚ ↔ x ∈ [0, ∞) ∧ x ∈ ℚ.
+Proof.
+We show both directions.
+- We need to show that x ∈ [0, ∞) ∩ ℚ ⇒ x ∈ [0, ∞) ∧ x ∈ ℚ.
+  Assume that x ∈ [0, ∞) ∩ ℚ.
+  We conclude that x ∈ [0, ∞) ∧ x ∈ ℚ.
+- We need to show that x ∈ [0, ∞) ∧ x ∈ ℚ ⇒ x ∈ [0, ∞) ∩ ℚ.
+  Assume that x ∈ [0, ∞) ∧ x ∈ ℚ.
+  We conclude that x ∈ [0, ∞) ∩ ℚ.
+Qed.
+```
+
+Before doing an exercise, it helps to understand how to prove that a set is an interval in Waterproof.
+This is done by using `It suffices to show that ...`.
+In the following line, you choose the interval you want to show it is equal to.
+To illustrate this, a proof is started below.
+
+## Interval Example
+
+```coq
+Lemma is_interval_example : 
+  [0,2] ∩ [0,1] is a single interval.
+Proof.
+It suffices to show that [0, 2] ∩ [0, 1] = [0, 1].
+Abort.
+```
+
+The following exercise is to practice with intersections (∩).
+
+## Exercise 2.2.6
+
+```coq
+Lemma exercise_2_2_6 : [-2, 5) ∩ [4, 7) is a single interval.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+Below there is another example of a proof with intersection.
+
+## Proposition 2.2.7
+
+```coq
+Lemma proposition_2_2_7 (X Y : subset 𝒰) : 
+  X ⊆ Y ↔ X ∩ Y = X.
+Proof.
+We show both directions.
+- We need to show that X ⊆ Y ⇨ X ∩ Y = X.
+  Assume that X ⊆ Y.
+  It holds that ∀ x ∈ X, x ∈ Y as (i).
+  It suffices to show that X ∩ Y ⊆ X ∧ X ⊆ (X ∩ Y).
+  We show both statements.
+  + We need to show that (X ∩ Y) ⊆ X.
+    It suffices to show that ∀ x ∈ X ∩ Y, x ∈ X.
+    Take x ∈ X ∩ Y.
+    It holds that x ∈ X ∧ x ∈ Y.
+    We conclude that x ∈ X.
+  + We need to show that X ⊆ (X ∩ Y).
+    It suffices to show that ∀ x ∈ X, x ∈ X ∩ Y.
+    Take x ∈ X.
+    It suffices to show that x ∈ X ∧ x ∈ Y.
+    We show both statements.
+    We conclude that x ∈ X.
+    We need to show that x ∈ Y.
+    By (i) we conclude that x ∈ Y.
+- We need to show that X ∩ Y = X ⇒ X ⊆ Y.
+  Assume that X ∩ Y = X.
+  It suffices to show that ∀ x ∈ X, x ∈ Y.
+  Take x ∈ X.
+  It holds that x ∈ X ∩ Y.
+  It holds that x ∈ X ∧ x ∈ Y.
+  We conclude that x ∈ Y.
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Declare Scope empty_set_of_universe.
+Notation "∅" := (Ensembles.Empty_set 𝒰) : empty_set_of_universe.
+
+Open Scope empty_set_of_universe.
+```
+</hint>
+
+Below there is another exercise to practice using intersections.
+
+## Exercise 2.2.8
+
+```coq
+Lemma exercise_2_2_8 (X : subset 𝒰) : X ∩ ∅ = ∅.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+<hint title="📦 Technical details">
+```coq
+Close Scope empty_set_of_universe.
+```
+</hint>
+
+To show that two sets `A` and `B` are disjoint in Waterproof, use `It suffices to show that A ∩ B is empty`.
+This can then be unfolded using the definition from Section 2.1.
+
+## Example 2.2.10
+
+Below is a slightly adapted version of Example 2.2.10 to make
+the proof less verbose.
+
+```coq
+Lemma example_2_2_10 : {0, 2} is disjoint from {1, 3}.
+Proof.
+It suffices to show that {0, 2} ∩ {1, 3} is empty.
+It suffices to show that ∀ x ∈ {0,2} ∩ {1,3}, False.
+Take x ∈ {0, 2} ∩ {1, 3}.
+It holds that x ∈ {0,2} ∧ x ∈ {1, 3}.
+It holds that x ∈ {0,2}.
+Either x = 0 or x = 2.
+- Case x = 0.
+  It holds that x ∉ {1, 3}.
+  Contradiction.
+- Case x = 2.
+  It holds that x ∉ {1, 3}.
+  Contradiction.
+Qed.
+```

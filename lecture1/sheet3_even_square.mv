@@ -1,0 +1,115 @@
+# 1.1 Propositional logic<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+
+Require Import Waterproof.Libs.Integers.Divisibility.
+Require Import Waterproof.Libs.Integers.Square.
+Require Import Waterproof.Libs.Reals.Rational.
+
+Require Import Coq.Reals.Reals.
+Require Import Coq.ZArith.Zeven.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+Open Scope subset_scope.
+Open Scope R_scope.
+Open Scope Z_scope.
+Close Scope R2_scope.
+
+Waterproof Enable Automation RealsAndIntegers.
+
+Waterproof Set Shorten Databases RealsAndIntegers wp_integers.
+
+Waterproof Enable Automation Empty.
+
+Waterproof Declare Automation Logic.
+Waterproof Set Main Databases Logic nocore, wp_prop_logic.
+Waterproof Set Decidability Databases Logic nocore, wp_prop_logic.
+Waterproof Set Shorten Databases Logic nocore, wp_prop_logic, wp_integers.
+
+Waterproof Enable Automation Logic.
+
+
+Local Ltac2 unfold_zeven (statement : constr) := eval unfold Zeven in $statement.
+Ltac2 Notation "Expand" "the" "definition" "of" "even" x(opt(seq("in", constr))) :=
+  wp_unfold unfold_zeven (Some "even") true x.
+Ltac2 Notation "_internal_" "Expand" "the" "definition" "of" "even" x(opt(seq("in", constr))) :=
+  wp_unfold unfold_zeven (Some "even") false x.
+
+Local Ltac2 unfold_is_square (statement : constr) := eval unfold is_square in $statement.
+Ltac2 Notation "Expand" "the" "definition" "of" "perfect" "square" x(opt(seq("in", constr))) :=
+  wp_unfold unfold_is_square (Some "perfect square") true x.
+Ltac2 Notation "_internal_" "Expand" "the" "definition" "of" "perfect" "square" x(opt(seq("in", constr))) :=
+  wp_unfold unfold_is_square (Some "perfect square") false x.
+
+
+```
+</hint>
+
+Below are examples of how you can show that a certain number is even or a perfect square.
+Showing `n is even` is done by adding `2 * m = n` to the assumptions for some `m`, as shown below.
+Showing `n is a square` is done by adding `m² = n` to the assumptions for some `m`, as shown below.
+When typing `We conclude that ... is ...` or `It holds that ... is ...`, Waterproof will automatically look for statements like `2 * m = n` or `m² = n` to verify that the proof step is correct.
+
+```coq
+Example showing_even : 6 is even.
+Proof.
+It holds that 2 * 3 = 6.
+We conclude that 6 is even.
+Qed.
+
+Example showing_perfect_square : 9 is a perfect square.
+Proof.
+It holds that 3 * 3 = 9.
+We conclude that 9 is a perfect square.
+Qed.
+```
+
+Using these examples, we can prove Example 1.1.22 from the book below.
+
+```coq
+Example example1_1_22 (n : ℤ) :
+  n = 1 ∨ n = 2 ⇒
+    n is even ∨ n is a perfect square.
+Proof.
+Assume that n = 1 ∨ n = 2.
+Either n = 1 or n = 2.
+- Case n = 1.
+  It suffices to show that n is a perfect square.
+  It holds that 1*1 = n.
+  We conclude that n is a perfect square.
+- Case n = 2.
+  It suffices to show that n is even.
+  It holds that 2*1=n.
+  We conclude that n is even.
+Qed.
+```
+
+```coq
+Lemma exercise1_1_23 (n : ℤ) :
+  n = 8 ∨ n = 9 ⇒
+    n is even ∨ n is a perfect square.
+Proof.
+Assume that n = 8 ∨ n = 9.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

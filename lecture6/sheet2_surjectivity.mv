@@ -1,0 +1,101 @@
+# 3.1 Injections and Surjections <hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Functions.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Functions.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+
+From Coq Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+Open Scope function_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Section sec.
+Context {𝒰 : Type}.
+Context {X Y Z : Type}.
+
+From Coq Require Import Reals.Reals.
+Waterproof Enable Automation RealsAndIntegers.
+
+```
+</hint>
+
+## Surjectivity example
+
+The example below is not in the book, but shows
+how to prove surjectivity in Waterproof.
+
+```coq
+Example halving_function_surjective :
+  (fun x : R => x / 2) is surjective.
+Proof.
+It suffices to show that ∀ y ∈ ℝ, ∃ x ∈ ℝ, (fun t => t / 2) x = y.
+Take y ∈ ℝ.
+Choose x := 2 * y.
+{
+  Indeed, (x ∈ ℝ).
+}
+We conclude that ((fun t => t / 2) x = y).
+Qed.
+```
+
+## Exercise 3.2.16
+
+For technical reasons, we use `subset X` instead of `𝒫(X)` in this exercise, but
+it means the same thing. You can use `Define B := ...` to introduce the definition of `B` suggested in the textbook. 
+For technical reasons, we use capital letters for functions.
+
+
+```coq
+Lemma exercise_3_2_16 (F : X → subset X) :
+  ¬ (F is surjective).
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+**Exercise 3.2.20**
+
+`F is bijective` is equivalent to
+`F is injective ∧ F is surjective`.
+
+```coq
+Lemma exercise_3_2_20 (F : X → Y) (G : Y → Z) :
+  F is bijective → G is bijective → (G ∘ F) is bijective.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
