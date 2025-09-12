@@ -127,7 +127,6 @@ Use the tactics in these examples to finish the following exercises.
 Note that the assumptions are done for us in the first line.
 
 ```coq
-Waterproof Enable Debug Automation.
 Lemma exercise1_1_13 (p q r : Prop) : 
   (p ∧ q) ∧ r ⇒ q. 
 Proof.
