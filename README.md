@@ -14,7 +14,7 @@ allow this.
 ## About
 
 These exercise sheets are based on the book "An Infinite Descent into Pure Mathematics" by Clive Newstead. 
-The exercise numbers refer to the version edited by the teaching team "Bewijzen in de Wiskunde" at Utrecht University, which is available [here](https://github.com/pimotte/infdesc/releases/download/v2025/infdesc.pdf the book). They are offered to students in Utrecht University's introductory proof course "Bewijzen in de Wiskunde".
+The exercise numbers refer to the version edited by the teaching team "Bewijzen in de Wiskunde" at Utrecht University, which is available [here](https://github.com/pimotte/infdesc/releases/download/v2025/infdesc).pdf the book). They are offered to students in Utrecht University's introductory proof course "Bewijzen in de Wiskunde".
 
 These exercises are available under Creative Commons Attribution-ShareAlike 4.0. See the LICENSE file for details.
 
