@@ -53,13 +53,15 @@ It holds that x ∈ U ∧ x ∈ V.
 It suffices to show that y ∈ g[U] ∧ y ∈ g[V].
 We show both statements.
 - We need to show that y ∈ g[U].
-  It suffices to show that ∃ z : X, In X U z ∧ y = g z.
+  It suffices to show that ∃ z ∈ U, y = g z.
   Choose z := x.
-  We conclude that In X U z ∧ y = g z.
+  { Indeed, z ∈ U. }
+  We conclude that y = g z.
 - We need to show that y ∈ g[V].
-  It suffices to show that ∃ w : X, In X V w ∧ y = g w.
+  It suffices to show that ∃ w ∈ V, y = g w.
   Choose w := x.
-  We conclude that In X V w ∧ y = g w.
+  { Indeed, w ∈ V. }
+  We conclude that y = g w.
 Qed.
 ```
 

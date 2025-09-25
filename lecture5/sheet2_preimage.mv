@@ -31,7 +31,7 @@ Open Scope function_scope.
 
 (* Define subseteq notation *)
 Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
-Waterproof Disable Filter Errors.
+
 
 Section sec.
 Context {𝒰 : Type}.
@@ -70,6 +70,9 @@ Qed.
 ```
 
 ## Exercise 3.1.40
+
+For technical reasons, Waterproof considers the empty set in the exercise below to have a universe of discourse of X or Y. Most of the time this will be determined automatically, but sometimes it cannot. If you get a weird error
+while using the empty set, try: using `(∅ : subset X)` or `(∅ : subset Y)` instead of just `∅`.
 
 
 ### Part (a): f⁻¹[∅] = ∅

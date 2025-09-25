@@ -60,6 +60,10 @@ Qed.
 ```
 ## Exercise 3.2.5
 
+<hint title="💡Hint">
+Injectivity can be used or proven using the formulation `∀ a ∈ X, ∀ b ∈ X, f(a) = f(b) → a = b`
+</hint>
+
 ```coq
 Lemma exercise_3_2_5 (f : X → Y) (g : Y → Z) :
   (g ∘ f) is injective → f is injective.
