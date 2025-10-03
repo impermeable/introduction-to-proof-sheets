@@ -1,0 +1,80 @@
+# 5.1 Relations<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Functions.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Functions.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+
+From Coq Require Import Sets.Ensembles.
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+Open Scope function_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+
+Section sec.
+Context {𝒰 : Type}.
+Context {X Y : Type}.
+
+(* Definition 5.1.30: Antisymmetric relation *)
+Definition antisymmetric {X : Type} (R : X → X → Prop) : Prop :=
+  ∀ a ∈ X, ∀ b ∈ X, R a b → R b a → a = b.
+
+(* Notation for antisymmetric relations *)
+Notation "R 'is' 'antisymmetric'" := (antisymmetric R) (at level 68) : function_scope.
+```
+</hint>
+
+
+```coq
+Example example_5_1_32 :
+  (fun a b : ℝ => a ≤ b) is antisymmetric.
+
+We need to show that (∀ a ∈ ℝ, ∀ b ∈ ℝ, a ≤ b → b ≤ a → a = b).
+Take a ∈ ℝ. 
+Take b ∈ ℝ.
+Assume that (a ≤ b). 
+Assume that (b ≤ a).
+We conclude that (a = b).
+Qed.
+```
+
+## Exercise 5.1.34
+
+In this exercise, we again use `subset Z` as notation for `𝒫(X)`.
+
+
+```coq
+Lemma subset_is_antisymmetric (Z : Type) :
+  (fun A B : subset Z => A ⊆ B) is antisymmetric.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```

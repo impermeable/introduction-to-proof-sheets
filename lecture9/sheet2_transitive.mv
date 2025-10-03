@@ -1,0 +1,102 @@
+# 5.1 Relations<hint title="📦 Import libraries (click to open/close)">
+```coq
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Notations.IndexedSets.
+Require Import Waterproof.Notations.Functions.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Integers.
+Require Import Waterproof.Notations.RealsWithSubsets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Functions.
+Require Import Waterproof.Libs.Reals.Rational.
+Waterproof Enable Automation Intuition.
+Waterproof Enable Automation Sets.
+Waterproof Enable Automation RealsAndIntegers.
+
+From Coq Require Import Sets.Ensembles.
+
+Waterproof Declare Automation Patch.
+Waterproof Set Shorten Databases Patch wp_integers.
+
+
+Waterproof Enable Automation Patch.
+
+
+Waterproof List Automation Databases.
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+
+Section sec.
+Context {𝒰 : Type}.
+Context {X Y : Type}.
+
+(* Definition: Transitive relation *)
+Definition transitive {X : Type} (R : X → X → Prop) : Prop :=
+  ∀ a ∈ X, ∀ b ∈ X, ∀ c ∈ X, R a b → R b c → R a c.
+
+
+(* Notation for transitive relations *)
+Notation "R 'is' 'transitive'" := (transitive R) (at level 69) : subset_scope.
+
+Section Real.
+From Coq Require Import Reals.Reals.
+```
+</hint>
+
+## Exercise 5.1.39
+
+(**
+Exercise 5.1.39: Let X be a set. Prove that ⊆ is a transitive relation on P(X).
+*)
+
+## Example 5.1.38: Rational difference relation is transitive
+
+```coq
+Example example_5_1_38 :
+  (fun a b : ℝ => (b - a) is rational) is transitive.
+Proof.
+We need to show that (∀ a ∈ ℝ, ∀ b ∈ ℝ, ∀ c ∈ ℝ, (b - a) is rational → (c - b) is rational → (c - a) is rational).
+Take a ∈ ℝ. Take b ∈ ℝ. Take c ∈ ℝ.
+Assume that ((b - a) is rational) as (i).
+Assume that ((c - b) is rational) as (j).
+It holds that ((c - b) + (b - a)) is rational.
+It holds that ((c - b) + (b - a) = c - a).
+We conclude that (c - a) is rational.
+Qed.
+```
+
+<hint title="Technical details">
+```coq
+End Real.
+```
+</hint>
+
+```coq
+Lemma exercise_5_1_39 (Z : Type) :
+  (fun A B : subset Z => A ⊆ B) is transitive.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
