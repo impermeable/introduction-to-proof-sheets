@@ -1,0 +1,223 @@
+# 9.2 Convergence<hint title="📦 Import libraries (click to open/close)">
+```coq
+From Coq Require Import Reals.Reals.
+From Coq Require Import Lia.
+From Coq Require Import Lra.
+Require Import Waterproof.Tactics.
+Require Import Waterproof.Notations.Common.
+Require Import Waterproof.Notations.Reals.
+Require Import Waterproof.Notations.Sets.
+Require Import Waterproof.Chains.
+Require Import Waterproof.Automation.
+Require Import Waterproof.Libs.Analysis.Sequences.
+
+Require Import Waterproof.Libs.Reals.
+
+Waterproof Enable Automation RealsAndIntegers.
+Waterproof Enable Automation Intuition.
+
+Waterproof List Automation Databases.
+
+Open Scope R_scope.
+Open Scope subset_scope.
+
+Notation "'max(' x , y )" := (Rmax x y)
+  (format "'max(' x ,  y ')'").
+Notation "'min(' x , y )" := (Rmin x y)
+  (format "'min(' x ,  y ')'").
+
+Notation "[ ( % @ < x 'and'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'as'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'hold'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'it'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'holds'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'we'" := x (at level 0, only parsing).
+Notation "[ ( % @ < x 'or'" := x (at level 0, only parsing).
+
+
+
+(* Define subseteq notation *)
+Notation "A ⊆ B" := (A ⊂ B) (at level 70) : subset_scope.
+Lemma Rabs_right' : forall r, r > 0 -> Rabs r = r.
+Proof.
+  intros r Hr.
+  apply Rabs_right.
+  left; exact Hr.
+Qed.
+
+Lemma Rlt_of_Nlt : forall n m, (n < m)%nat -> (n < m)%R.
+Proof.
+  intros n m H.
+  apply lt_INR; exact H.
+Qed.
+
+
+Lemma inv_of_one_over : forall (n : nat), 1/n = /n.
+Proof.
+Admitted.
+
+
+Lemma inv_leq_one : ∀ n, 0 < n -> 1/n ≤ 1.
+Proof.
+Admitted.
+
+Lemma Rdiv_le_contravar : forall r s t, 0 ≤ t -> 0 ≤ r -> r ≤ s -> t/s ≤ t/r.
+Proof.
+Admitted.
+
+Lemma Rdiv_lt_contravar : forall r s t, 0 < t -> 0 ≤ r -> r < s -> t/s < t/r.
+Proof.
+Admitted.
+
+#[export] Hint Resolve Rabs_right : wp_reals.
+#[export] Hint Resolve Rabs_right' : wp_reals.
+#[export] Hint Resolve Rlt_of_Nlt : wp_reals.
+#[export] Hint Extern 1 => eapply Rinv_le_contravar : wp_reals.
+#[export] Hint Extern 1 => eapply Rdiv_le_contravar : wp_reals.
+#[export] Hint Extern 1 => rewrite inv_of_one_over : wp_reals.
+#[export] Hint Extern 1 => rewrite Rinv_mult : wp_reals.
+#[export] Hint Resolve inv_leq_one : wp_reals.
+#[export] Hint Resolve archimedN_exists : wp_core.
+
+Section sec.
+Context {𝒰 : Type}.
+Context {X Y : Type}.
+
+
+Definition converges_g (a : ℕ → ℝ) := ∃ l ∈ ℝ, a ⟶ l.
+
+Notation "a 'converges'" := (converges_g a) (at level 69).
+
+```
+</hint>
+
+# Proposition 9.2.6
+
+In this proof we state that there exists an M bigger than some real number
+and then obtain it, rather than explicitly using a ceiling function.
+Both are valid options for proofs, but for Waterproof-technical reasons we chose this style. 
+
+In this proposition we use `By magic` to escape some of the difficulties
+of real number arithmetic. Feel free to do this in the exercises as well,
+but be sure to ask your teacher to verify the steps you make with magic
+are acceptable. Also, don't use the `By magic` notation on paper
+unless you want to communicate that you are bluffing.
+```coq
+
+Definition y : ℕ → ℝ := fun n => 1/n.
+
+Example proposition_9_2_16 : y converges.
+Proof.
+It suffices to show that ∃ l ∈ ℝ, y ⟶ l.
+Choose l := 0.
+{ Indeed, l ∈ ℝ. }
+We need to show that y ⟶ l.
+It suffices to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |y(n) - l| < ε.
+Take ε > 0.
+It holds that ∃ M ∈ ℕ, M > 1/ε.
+Obtain such M.
+Choose N1 := M.
+{ Indeed, N1 ∈ ℕ. }
+We need to show that ∀ n ≥ M, |y(n) - l| < ε.
+Take n ≥ M.
+It holds that &|y(n)-l| = |1/n-0| = |1/n|.
+By magic it holds that |1/n| = 1/n.
+By magic it holds that 1/n ≤ 1/M.
+By magic it holds that 1/M < 1/(1/ε).
+We conclude that
+  &|y(n)-l| < 1/(1/ε) = ε.
+Qed.
+```
+
+## Exercise 9.2.20
+
+```coq
+Definition a : ℕ → ℝ := fun n => 1 / (n * n).
+
+Example exercise_9_2_20 : a converges.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+
+```coq
+Qed.
+```
+
+## Exercise 9.2.21
+
+```coq
+Definition b : ℕ → ℝ := fun n => (3 * n) / (2 * n + 1).
+
+Example exercise_9_2_21 : b converges.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+## Exercise 9.2.22
+
+```coq
+Definition c : ℕ → ℝ := fun n => 3 + (n - 1) / (2 * n + 1).
+
+Example exercise_9_2_22 : c converges.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+
+```coq
+Qed.
+```
+
+
+## Exercise 9.2.23
+
+```coq
+Definition d : ℕ → ℝ := fun n => 1/(2^n).
+
+Example exercise_9_2_23 : d converges.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+```coq
+Qed.
+```
+
+
+
+
+## Exercise 9.2.24
+
+```coq
+Definition z : ℕ → ℝ := fun n => (n + 1) / (n + 2).
+
+Example exercise_9_2_24 : z converges.
+Proof.
+```
+<input-area>
+```coq
+
+```
+</input-area>
+
+```coq
+Qed.
+```
+
